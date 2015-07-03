@@ -16,7 +16,7 @@
       <iconUrl>https://github.com/mikeobrien/NLog.Mustache/raw/master/assets/logo.png</iconUrl>
       <tags>snlog mustache</tags>
       <dependencies>
-         <dependency id="Nustache" version="1.0.0" />
+         <dependency id="Nustache" version="1.15.0" />
          <dependency id="NLog" version="4.0.0" />
       </dependencies>
    </metadata>
