@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mustache", "Mustache\Mustache.csproj", "{084807B8-153A-4994-A997-6C4331E4BE9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{907127C1-D86B-43F1-988E-E87F35BC1F19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{084807B8-153A-4994-A997-6C4331E4BE9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{084807B8-153A-4994-A997-6C4331E4BE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{084807B8-153A-4994-A997-6C4331E4BE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{084807B8-153A-4994-A997-6C4331E4BE9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{907127C1-D86B-43F1-988E-E87F35BC1F19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{907127C1-D86B-43F1-988E-E87F35BC1F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{907127C1-D86B-43F1-988E-E87F35BC1F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{907127C1-D86B-43F1-988E-E87F35BC1F19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
