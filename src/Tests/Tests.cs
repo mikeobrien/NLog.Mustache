@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NLog;
 using NLog.Config;
+using NLog.Mustache.Extensions;
 using NLog.Targets;
 using NUnit.Framework;
 using Should;

@@ -43,9 +43,10 @@ namespace NLog.Mustache.Extensions
         public static IList<Assembly> GetNonClrAssemblies(this AppDomain domain)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => !x.FullName.StartsWith("mscorlib,") &&
-                            !x.FullName.StartsWith("System,") &&
-                            !x.FullName.StartsWith("System.")).ToList();
+                .Where(x => !x.IsDynamic &&
+                    !x.FullName.StartsWith("mscorlib,") &&
+                    !x.FullName.StartsWith("System,") &&
+                    !x.FullName.StartsWith("System.")).ToList();
         } 
     }
 }
