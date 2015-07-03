@@ -58,6 +58,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF EXIST $(TargetPath).orig.dll DEL $(TargetPath).orig.dll
+REN $(TargetPath) $(TargetFileName).orig.dll
+$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe /lib:"$(MSBuildBinPath)" /targetplatform:v4 /out:"$(TargetPath)" "$(TargetPath).orig.dll" "$(TargetDir)Nustache.Core.dll"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
