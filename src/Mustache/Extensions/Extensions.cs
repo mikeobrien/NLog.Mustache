@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace NLog.Mustache.Extensions
 {
@@ -26,16 +28,24 @@ namespace NLog.Mustache.Extensions
             return source == null ? default(TResult) : value(source);
         }
 
-        public static string FindResourceString(this string resourceName)
+        public static string Join(this IEnumerable<string> source, string seperator)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetManifestResourceNames()
-                    .Where(n => n.ToLower().EndsWith(resourceName.ToLower()))
-                    .Select(n => new { Name = n, Assembly = a }))
-                .OrderBy(x => x.Name.Length)
-                .FirstOrDefault()
-                .WhenNotNull(x => new StreamReader(x.Assembly.GetManifestResourceStream(x.Name)))
+            return source != null && source.Any() ? 
+                source.Aggregate((a, i) => $"{a}{seperator}{i}") : "";
+        }
+
+        public static string GetResourceString(this Assembly assembly, string name)
+        {
+            return new StreamReader(assembly.GetManifestResourceStream(name))
                 .WhenNotNull(x => x.ReadToEnd());
         }
+
+        public static IList<Assembly> GetNonClrAssemblies(this AppDomain domain)
+        {
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .Where(x => !x.FullName.StartsWith("mscorlib,") &&
+                            !x.FullName.StartsWith("System,") &&
+                            !x.FullName.StartsWith("System.")).ToList();
+        } 
     }
 }
