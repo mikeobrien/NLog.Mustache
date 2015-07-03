@@ -14,3 +14,5 @@ Usage
 ------------
 
 https://github.com/NLog/NLog/blob/master/src/NLog/LogEventInfo.cs
+
+Layout = "${mustache:template.mustache:debug=true}"
