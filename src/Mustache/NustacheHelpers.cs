@@ -11,6 +11,7 @@ namespace NLog.Mustache
         public static void Register()
         {
             Helpers.Register("property", PropertyHelper);
+            Helpers.Register("format", FormatHelper);
         }
 
         public static void PropertyHelper(
@@ -52,6 +53,30 @@ namespace NLog.Mustache
                 if (property != null) return property.GetValue(source).Format(format);
             }
             return "";
+        }
+
+        public static void FormatHelper(
+            RenderContext ctx,
+            IList<object> args,
+            IDictionary<string, object> options,
+            RenderBlock fn,
+            RenderBlock inverse)
+        {
+            try
+            {
+                ctx.Write(FormatValue(args));
+            }
+            catch (Exception exception)
+            {
+                ctx.Write(exception.ToString());
+            }
+        }
+
+        public static string FormatValue(IList<object> args)
+        {
+            if (args == null) return "";
+            return args.Count < 2 ? args[0].ToString() : 
+                args[0].Format(args[1] as string);
         }
     }
 }

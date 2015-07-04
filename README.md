@@ -28,7 +28,7 @@ Layout = "${mustache:Template.mustache:debug=true}"
 
 The model that is passed to the template is a wrapper around the [`LogEventInfo`](https://github.com/NLog/NLog/blob/master/src/NLog/LogEventInfo.cs) object and exposes all its properties. 
 
-```htmldjango
+```handlebars
 {{level}}: {{#exception}}{{message}}{{/exception}}
 ```
 
@@ -36,7 +36,7 @@ The model that is passed to the template is a wrapper around the [`LogEventInfo`
 
 An additional `Exceptions` (plural) property has been added to allow you to enumerate a flattened list of the exception and inner exceptions. The additional `number` property indicates the 1-based index of the exception.
 
-```htmldjango
+```handlebars
 {{#exceptions}}
     {{number}}: {{message}}
 {{/exceptions}}
@@ -44,7 +44,7 @@ An additional `Exceptions` (plural) property has been added to allow you to enum
 
 Exceptions also have an additional `properties` property that allows you to enumerate all the properties on the exception:
 
-```htmldjango
+```handlebars
 {{#exceptions}}
     {{message}}
     {{#properties}}
@@ -53,34 +53,36 @@ Exceptions also have an additional `properties` property that allows you to enum
 {{/exceptions}}
 ```
 
-Properties of `System.Exception` are directly accessible with the standard mustache syntax (e.g. `{{message}}`). Properties of `System.Exception` subtypes can only be accessed with the `property` helper (Which also supports formatting, see [below](#formatting)). For example if your exception subtype has an `Id` property you can access it as follows:
+Properties of `System.Exception` are directly accessible with the standard mustache syntax (e.g. `{{message}}`). Properties of `System.Exception` subtypes can only be accessed with the `property` helper. For example if your exception subtype has an `Id` property you can access it as follows:
 
-```htmldjango
+```handlebars
 {{property exception "id"}}: {{message}}
 {{#exceptions}}
     {{property . "id"}}: {{message}}
 {{/exceptions}}
 ```
 
-The first parameter indicates where the property is declared, either on the current object (As indicated with a `.`) or a property of the current object. The second is the property itself.
+The first parameter indicates where the property is declared, either on the current object (As indicated with a `.`) or a property of the current object. The second is the property itself. 
+
+The `property` helper optionally supports a [.NET format string](https://msdn.microsoft.com/en-us/library/26etazsy(v=vs.110).aspx):
+
+```handlebars
+{{property exception "timestamp" "yyyyMMdd"}}
+```
+See [the next section](#formatting) for more information on format string syntax.
 
 ### Formatting
 
-Values can be formatted with the `property` helper:
+Values can be formatted with the `format` helper and a [.NET format string](https://msdn.microsoft.com/en-us/library/26etazsy(v=vs.110).aspx):
 
-```htmldjango
-{{property exception "timestamp" "yyyyMMdd"}}
-{{#exceptions}}
-    {{property . "timestamp" "yyyyMMdd"}}}
-{{/exceptions}}
+```handlebars
+{{format timestamp "yyyyMMdd"}}
 ```
 
-The first parameter indicates where the property is declared, either on the current object (As indicated with a `.`) or a property of the current object. The second is the property itself. And the last, a [.NET format string](https://msdn.microsoft.com/en-us/library/26etazsy(v=vs.110).aspx).
+By default a blank string is returned if there is a formatting error. To return the error message when an error occurs, prefix the format string with a `!` as follows:
 
-By default a blank string is returned if there is a formatting error. To return the error message when an error occurs, prefix the format string with an `!` as follows:
-
-```
-{{property . "timestamp" "!yyyyMMdd"}}}
+```handlebars
+{{format timestamp "!yyyyMMdd"}}}
 ```
 
 ### License
