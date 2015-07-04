@@ -1,41 +1,22 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.IO;
 using System.Linq;
-using System.Text;
-using NLog.Config;
-using NLog.LayoutRenderers;
 using NLog.Mustache.Extensions;
 
 namespace NLog.Mustache
 {
-    [LayoutRenderer("mustache")]
-    public class MustachRenderer : LayoutRenderer
+    public static class Template
     {
-        private static readonly ConcurrentDictionary<string, string> TemplateCache = 
+        private static readonly ConcurrentDictionary<string, string> TemplateCache =
             new ConcurrentDictionary<string, string>();
 
-        [DefaultParameter, RequiredParameter]
-        public string Template { get; set; }
-
-        public bool Debug { get; set; }
-
-        protected override void Append(StringBuilder builder, LogEventInfo logEvent)
+        public static string Load(string templateName, bool debug)
         {
-            var template = TemplateCache.ContainsKey(Template) ? TemplateCache[Template] : 
-                TemplateCache.AddValue(Template, FindTemplate(Template, Debug));
-
-            try
-            {
-                builder.Append(Nustache.Core.Render.StringToString(template, logEvent));
-            }
-            catch (Exception exception)
-            {
-                if (Debug) builder.Append($"Error rendering template: {exception}");
-            }
+            return TemplateCache.ContainsKey(templateName) ? TemplateCache[templateName] :
+                TemplateCache.AddValue(templateName, Find(templateName, debug));
         }
 
-        public static string FindTemplate(string resourceName, bool debug)
+        private static string Find(string resourceName, bool debug)
         {
             var assemblies = AppDomain.CurrentDomain.GetNonClrAssemblies();
             var resource = assemblies
@@ -52,7 +33,8 @@ namespace NLog.Mustache
                 .Select(x => new { Assembly = x, Resources = x.GetManifestResourceNames() })
                 .Where(x => x.Resources.Any())
                 .Select(x => $"{x.Assembly.FullName}:\r\n\t{x.Resources.Join("\r\n\t")}").Join("\r\n");
-            return $"Embedded resource {resourceName} not found. The folowing resources were found:\r\n{resources}";
+            return $"Embedded resource {resourceName} not found. " +
+                $"The folowing resources were found:\r\n{resources}";
         }
     }
 }

@@ -39,6 +39,10 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Nustache.Core, Version=1.15.2.10, Culture=neutral, PublicKeyToken=efd6f3d8f76ecd9f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nustache.1.15.2.10\lib\net20\Nustache.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Should.1.1.20\lib\Should.dll</HintPath>
       <Private>True</Private>
@@ -53,14 +57,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests.cs" />
+    <Compile Include="LogEventInfoModelTests.cs" />
+    <Compile Include="MustacheTests.cs" />
+    <Compile Include="NustacheHelpersTests.cs" />
+    <Compile Include="TemplateTests.cs" />
+    <Compile Include="ExceptionModelTests.cs" />
+    <Compile Include="RendererTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Template.html" />
+    <EmbeddedResource Include="Templates\Template.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mustache\Mustache.csproj">
@@ -69,7 +78,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmptyTemplate.html" />
+    <EmbeddedResource Include="Templates\EmptyTemplate.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\ExceptionTemplate.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\PropertyHelperTemplate.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

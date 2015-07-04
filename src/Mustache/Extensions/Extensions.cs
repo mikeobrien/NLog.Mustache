@@ -11,8 +11,7 @@ namespace NLog.Mustache.Extensions
     {
         public static TValue AddValue<TKey, TValue>(
             this ConcurrentDictionary<TKey, TValue> dictionary, 
-            TKey key,
-            TValue value)
+            TKey key, TValue value)
         {
             dictionary.TryAdd(key, value);
             return value;
@@ -47,6 +46,16 @@ namespace NLog.Mustache.Extensions
                     !x.FullName.StartsWith("mscorlib,") &&
                     !x.FullName.StartsWith("System,") &&
                     !x.FullName.StartsWith("System.")).ToList();
-        } 
+        }
+
+        public static IEnumerable<T> Flatten<T>(this T source, Func<T, T> iterator) where T : class
+        {
+            var result = source;
+            while (result != null)
+            {
+                yield return result;
+                result = iterator(result);
+            }
+        }
     }
 }

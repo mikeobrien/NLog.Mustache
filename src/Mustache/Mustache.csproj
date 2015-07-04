@@ -49,9 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionModel.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="MustacheRenderer.cs" />
+    <Compile Include="NustacheHelpers.cs" />
+    <Compile Include="LogEventInfoModel.cs" />
+    <Compile Include="Renderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mustache.cs" />
+    <Compile Include="Template.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -59,10 +64,10 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF EXIST $(TargetPath).orig.dll DEL $(TargetPath).orig.dll
-REN $(TargetPath) $(TargetFileName).orig.dll
-$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe /lib:"$(MSBuildBinPath)" /targetplatform:v4 /out:"$(TargetPath)" "$(TargetPath).orig.dll" "$(TargetDir)Nustache.Core.dll"
-IF EXIST $(TargetPath).orig.dll DEL $(TargetPath).orig.dll</PostBuildEvent>
+    <PostBuildEvent>IF EXIST $(TargetPath).dll DEL $(TargetPath).dll
+REN $(TargetPath) $(TargetFileName).dll
+$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe /lib:"$(MSBuildBinPath)" /targetplatform:v4 /internalize /out:"$(TargetPath)" "$(TargetPath).dll" "$(TargetDir)Nustache.Core.dll"
+IF EXIST $(TargetPath).dll DEL $(TargetPath).dll</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
