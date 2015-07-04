@@ -48,7 +48,7 @@ namespace Tests
         }
 
         [Test]
-        public void should_return_empty_string_when_formatting_fails()
+        public void should_return_empty_string_when_property_formatting_fails()
         {
             NustacheHelpers.GetPropertyValue(
                 new List<object> { new SomeClass
@@ -59,7 +59,7 @@ namespace Tests
         }
 
         [Test]
-        public void should_return_error_when_formatting_fails_and_debug_is_enabled()
+        public void should_return_error_when_property_formatting_fails_and_debug_is_enabled()
         {
             NustacheHelpers.GetPropertyValue(
                 new List<object> { new SomeClass
@@ -99,6 +99,38 @@ namespace Tests
         public void should_return_empty_if_invalid_args(List<object> args)
         {
             NustacheHelpers.GetPropertyValue(args).ShouldEqual("");
+        }
+
+        [Test]
+        public void should_get_formatted_value()
+        {
+            NustacheHelpers.FormatValue(
+                new List<object> { new DateTime(1985, 10, 26), "yyyyMMdd" })
+                .ShouldEqual("19851026");
+        }
+
+        [Test]
+        public void should_get_formatted_value_with_curley_braces()
+        {
+            NustacheHelpers.FormatValue(
+                new List<object> { new DateTime(1985, 10, 26), "}{yyyyMMdd" })
+                .ShouldEqual("}{19851026");
+        }
+
+        [Test]
+        public void should_return_empty_string_when_value_formatting_fails()
+        {
+            NustacheHelpers.FormatValue(
+                new List<object> { 169.32m, "Q2" })
+                .ShouldEqual("");
+        }
+
+        [Test]
+        public void should_return_error_when_value_formatting_fails_and_debug_is_enabled()
+        {
+            NustacheHelpers.FormatValue(
+                new List<object> { 169.32m, "!Q2" })
+                .ShouldEqual("Format specifier was invalid.");
         }
     }
 }
