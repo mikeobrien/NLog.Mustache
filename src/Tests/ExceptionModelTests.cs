@@ -36,13 +36,13 @@ namespace Tests
 
             model.Properties.Count.ShouldEqual(8);
             model.Properties[0].Name.ShouldEqual("Data");
-            model.Properties[0].Value.ShouldEqual(exception.Data.ToString());
+            model.Properties[0].Value.ShouldEqual(exception.Data);
             model.Properties[1].Name.ShouldEqual("HelpLink");
             model.Properties[1].Value.ShouldEqual(exception.HelpLink);
             model.Properties[2].Name.ShouldEqual("HResult");
-            model.Properties[2].Value.ShouldEqual(exception.HResult.ToString());
+            model.Properties[2].Value.ShouldEqual(exception.HResult);
             model.Properties[3].Name.ShouldEqual("InnerException");
-            model.Properties[3].Value.ShouldEqual(exception.InnerException.ToString());
+            model.Properties[3].Value.ShouldEqual(exception.InnerException);
             model.Properties[4].Name.ShouldEqual("Message");
             model.Properties[4].Value.ShouldEqual(exception.Message);
             model.Properties[5].Name.ShouldEqual("Source");
@@ -50,7 +50,7 @@ namespace Tests
             model.Properties[6].Name.ShouldEqual("StackTrace");
             model.Properties[6].Value.ShouldEqual(exception.StackTrace);
             model.Properties[7].Name.ShouldEqual("TargetSite");
-            model.Properties[7].Value.ShouldEqual(exception.TargetSite?.ToString());
+            model.Properties[7].Value.ShouldEqual(exception.TargetSite);
         }
 
         [Test]

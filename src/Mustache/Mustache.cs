@@ -1,4 +1,5 @@
 ﻿using System;
+using Nustache.Core;
 
 namespace NLog.Mustache
 {
@@ -8,8 +9,7 @@ namespace NLog.Mustache
         {
             try
             {
-                return Nustache.Core.Render.StringToString(
-                    template, new LogEventInfoModel(logEvent));
+                return Render.StringToString(template, new LogEventInfoModel(logEvent));
             }
             catch (Exception exception)
             {

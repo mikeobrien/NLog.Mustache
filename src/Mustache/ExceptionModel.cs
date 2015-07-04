@@ -17,7 +17,7 @@ namespace NLog.Mustache
             _exception = exception;
             Properties = exception?.GetType().GetProperties()
                 .Select(x => new ExceptionProperty(x.Name, 
-                    x.GetValue(exception)?.ToString()))
+                    x.GetValue(exception)))
                 .OrderBy(x => x.Name).ToList() ?? 
                 new List<ExceptionProperty>();
         }
@@ -35,14 +35,14 @@ namespace NLog.Mustache
 
         public class ExceptionProperty
         {
-            public ExceptionProperty(string name, string value)
+            public ExceptionProperty(string name, object value)
             {
                 Name = name;
                 Value = value;
             }
 
             public string Name { get; set; }
-            public string Value { get; set; }
+            public object Value { get; set; }
         }
     }
 }

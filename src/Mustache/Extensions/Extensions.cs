@@ -27,6 +27,31 @@ namespace NLog.Mustache.Extensions
             return source == null ? default(TResult) : value(source);
         }
 
+        public static string StripFirst(this string value)
+        {
+            return value.WhenNotNull(x => string.IsNullOrEmpty(value) || 
+                x.Length == 1 ? "" : x.Substring(1));
+        }
+
+        public static string Format(this object value, string format)
+        {
+            if (value == null) return "";
+            if (string.IsNullOrEmpty(format)) return value.ToString();
+
+            var debug = format.StartsWith("!");
+            format = debug ? format.StripFirst() : format;
+            format = format.Replace("{", "{{").Replace("}", "}}");
+
+            try
+            {
+                return string.Format($"{{0:{format}}}", value);
+            }
+            catch (Exception exception)
+            {
+                return debug ? exception.Message : "";
+            }
+        }
+
         public static string Join(this IEnumerable<string> source, string seperator)
         {
             return source != null && source.Any() ? 
