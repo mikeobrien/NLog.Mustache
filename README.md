@@ -20,6 +20,7 @@ var target = new MemoryTarget
 {
     Layout = "${mustache:Template.mustache}"
 };
+```
 
 An optional debug flag can be passed if the template is not rendering. This flag will cause the renderer to output debugging information.
 
@@ -29,13 +30,13 @@ Layout = "${mustache:Template.mustache:debug=true}"
 
 The model that is passed to the template is a wrapper around the [`LogEventInfo`](https://github.com/NLog/NLog/blob/master/src/NLog/LogEventInfo.cs) object and exposes all its properties. 
 
-```mustache
+```htmldjango
 {{level}}: {{#exception}}{{message}}{{/exception}}
 ```
 
 An additional `Exceptions` (plural) property has been added to allow you to enumerate a flattened list of the exception and inner exceptions. The additional `number` property indicates the 1-based index of the exception.
 
-```mustache
+```htmldjango
 {{#exceptions}}
     {{number}}: {{message}}
 {{/exceptions}}
@@ -43,7 +44,7 @@ An additional `Exceptions` (plural) property has been added to allow you to enum
 
 Exceptions also have an additional `properties` property that allows you to enumerate through all the properties on the exception:
 
-```mustache
+```htmldjango
 {{#exceptions}}
     {{message}}
     {{#properties}}
@@ -54,7 +55,7 @@ Exceptions also have an additional `properties` property that allows you to enum
 
 You can access custom exception properties directly with the `property` helper. For example if your custom exceptions have an `Id` property:
 
-```mustache
+```htmldjango
 {{property exception "id"}}: {{message}}
 {{#exceptions}}
     {{property . "id"}}: {{message}}
