@@ -79,11 +79,23 @@ Values can be formatted with the `format` helper and a [.NET format string](http
 {{format timestamp "yyyyMMdd"}}
 ```
 
+*NOTE: Format strings do not support whitespace. Whitespace can be passed url encoded e.g. `yyyyMMdd%20hh:mm:ss`.*
+
 By default a blank string is returned if there is a formatting error. To return the error message when an error occurs, prefix the format string with a `!` as follows:
 
 ```handlebars
 {{format timestamp "!yyyyMMdd"}}}
 ```
+
+### Replacing Values
+
+Values can be replaced with the `replace` helper:
+
+```handlebars
+{{replace message "search" "replacement"}}
+```
+
+*NOTE: Search and replacement strings do not support whitespace. Whitespace can be passed url encoded e.g. `%0D%0A` for new lines or `%20` for spaces.*
 
 ### License
 

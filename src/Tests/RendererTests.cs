@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NLog;
 using NLog.Config;
+using NLog.Mustache;
 using NLog.Targets;
 using NUnit.Framework;
 using Should;
@@ -75,20 +78,6 @@ namespace Tests
         }
 
         [Test]
-        public void should_render_template_with_property_helper()
-        {
-            Setup("PropertyHelperTemplate.html", false);
-            _logger.Fatal(new MyException("hai", new Exception()), "yada");
-            _target.Logs.Count.ShouldEqual(1);
-            var entry = _target.Logs.First();
-            entry.ShouldContain("property:123456:");
-            entry.ShouldContain("current:123456:");
-            entry.ShouldContain("sourcenotfound::");
-            entry.ShouldContain("propnotfound::");
-            entry.ShouldContain("object:Tests:");
-        }
-
-        [Test]
         public void should_render_empty_debug_template()
         {
             Setup("EmptyTemplate.html", true);
@@ -106,6 +95,61 @@ namespace Tests
             var entry = _target.Logs.First();
             entry.ShouldContain("Tests, ");
             entry.ShouldContain("Tests.Templates.Template.html");
+        }
+
+        [Test]
+        public void should_render_template_with_property_helper()
+        {
+            var logEventInfo = new LogEventInfo(
+                LogLevel.Fatal,
+                "Tests",
+                new CultureInfo("en-US"),
+                "Error",
+                new object[] { },
+                new MyException("hai", new Exception()))
+            {
+                TimeStamp = new DateTime(1985, 10, 26)
+            };
+
+            Setup("PropertyHelperTemplate.html", false);
+            _logger.Log(logEventInfo);
+            _target.Logs.Count.ShouldEqual(1);
+            var entry = _target.Logs.First();
+            entry.ShouldContain("property:123456:");
+            entry.ShouldContain("current:123456:");
+            entry.ShouldContain("sourcenotfound::");
+            entry.ShouldContain("propnotfound::");
+            entry.ShouldContain("object:Tests:");
+            entry.ShouldContain("timestamp:1985 10 26:");
+        }
+
+        [Test]
+        public void should_render_template_with_format_helper()
+        {
+            var logEventInfo = new LogEventInfo(
+                LogLevel.Fatal,
+                "Tests",
+                new CultureInfo("en-US"),
+                "Error",
+                new object[] { },
+                new MyException("hai", new Exception()))
+            {
+                TimeStamp = new DateTime(1985, 10, 26)
+            };
+
+            Setup("FormatHelperTemplate.html", false);
+            _logger.Log(logEventInfo);
+            _target.Logs.Count.ShouldEqual(1);
+            _target.Logs.First().ShouldEqual("1985 10 26");
+        }
+
+        [Test]
+        public void should_render_template_with_replace_helper()
+        {
+            Setup("ReplaceHelperTemplate.html", false);
+            _logger.Fatal("oh hai");
+            _target.Logs.Count.ShouldEqual(1);
+            _target.Logs.First().ShouldEqual("oh bai");
         }
     }
 }

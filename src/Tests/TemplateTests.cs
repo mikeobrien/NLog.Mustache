@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NLog;
-using NLog.Config;
-using NLog.Mustache;
-using NLog.Targets;
+﻿using NLog.Mustache;
 using NUnit.Framework;
 using Should;
 
