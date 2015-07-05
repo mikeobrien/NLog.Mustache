@@ -1,6 +1,6 @@
 ﻿{{#exceptions}}
     {{number}}: {{message}} {{property . "id"}}
     {{#properties}}
-        {{name}}: {{value}}
+        {{#hasvalue}}{{name}}: {{value}}{{/hasvalue}}
     {{/properties}}
 {{/exceptions}}

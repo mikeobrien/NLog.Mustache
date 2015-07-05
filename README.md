@@ -42,13 +42,15 @@ An additional `Exceptions` (plural) property has been added to allow you to enum
 {{/exceptions}}
 ```
 
-Exceptions also have an additional `properties` property that allows you to enumerate all the properties on the exception:
+Exceptions also have an additional `properties` property that allows you to enumerate all the properties on the exception. These have a `Name`, `Value` and `HasValue` property.
 
 ```handlebars
 {{#exceptions}}
     {{message}}
     {{#properties}}
-        {{name}}: {{value}}
+        {{#hasvalue}}
+            {{name}}: {{value}}
+        {{/hasvalue}}
     {{/properties}}
 {{/exceptions}}
 ```

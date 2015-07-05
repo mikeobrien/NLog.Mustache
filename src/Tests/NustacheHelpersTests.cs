@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using NLog.Mustache;
 using NUnit.Framework;
 using Should;

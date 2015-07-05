@@ -147,9 +147,9 @@ namespace Tests
         public void should_render_template_with_replace_helper()
         {
             Setup("ReplaceHelperTemplate.html", false);
-            _logger.Fatal("oh hai");
+            _logger.Fatal("oh\r\nhai");
             _target.Logs.Count.ShouldEqual(1);
-            _target.Logs.First().ShouldEqual("oh bai");
+            _target.Logs.First().ShouldEqual("oh<br/>hai");
         }
     }
 }

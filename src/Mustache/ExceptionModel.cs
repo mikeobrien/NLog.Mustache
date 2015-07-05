@@ -18,6 +18,7 @@ namespace NLog.Mustache
             Properties = exception?.GetType().GetProperties()
                 .Select(x => new ExceptionProperty(x.Name, 
                     x.GetValue(exception)))
+                .Where(x => x.Name != "Data")
                 .OrderBy(x => x.Name).ToList() ?? 
                 new List<ExceptionProperty>();
         }
@@ -39,8 +40,10 @@ namespace NLog.Mustache
             {
                 Name = name;
                 Value = value;
+                HasValue = value != null && value as string != "";
             }
 
+            public bool HasValue { get; }
             public string Name { get; set; }
             public object Value { get; set; }
         }
