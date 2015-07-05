@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,10 +65,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF EXIST $(TargetPath).dll DEL $(TargetPath).dll
-REN $(TargetPath) $(TargetFileName).dll
-$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe /lib:"$(MSBuildBinPath)" /targetplatform:v4 /internalize /out:"$(TargetPath)" "$(TargetPath).dll" "$(TargetDir)Nustache.Core.dll"
-IF EXIST $(TargetPath).dll DEL $(TargetPath).dll</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

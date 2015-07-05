@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using NLog.Mustache;
-using NLog.Mustache.Extensions;
 using NUnit.Framework;
 using Should;
 
@@ -20,8 +18,7 @@ namespace Tests
         [Test]
         public void should_get_property_value()
         {
-            NustacheHelpers.GetPropertyValue(
-                new List<object> { new SomeClass { Hai = "yada"}, "Hai" })
+            NustacheHelpers.GetPropertyValue(new SomeClass { Hai = "yada"}, "Hai", null)
                 .ShouldEqual("yada");
         }
 
@@ -29,21 +26,26 @@ namespace Tests
         public void should_get_formatted_property_value()
         {
             NustacheHelpers.GetPropertyValue(
-                new List<object> { new SomeClass
-                {
-                    Oh = new DateTime(1985, 10, 26)
-                }, "Oh", "yyyyMMdd" })
+                new SomeClass { Oh = new DateTime(1985, 10, 26) }, "Oh", "yyyyMMdd")
                 .ShouldEqual("19851026");
+        }
+
+        [Test]
+        public void should_get_url_encoded_formatted_property_value()
+        {
+            NustacheHelpers.GetPropertyValue(
+                new SomeClass { Oh = new DateTime(1985, 10, 26) }, "Oh", "yyyy%20MM%20dd")
+                .ShouldEqual("1985 10 26");
         }
 
         [Test]
         public void should_get_formatted_property_value_with_curley_braces()
         {
             NustacheHelpers.GetPropertyValue(
-                new List<object> { new SomeClass
+                new SomeClass
                 {
                     Oh = new DateTime(1985, 10, 26)
-                }, "Oh", "}{yyyyMMdd" })
+                }, "Oh", "}{yyyyMMdd")
                 .ShouldEqual("}{19851026");
         }
 
@@ -51,10 +53,7 @@ namespace Tests
         public void should_return_empty_string_when_property_formatting_fails()
         {
             NustacheHelpers.GetPropertyValue(
-                new List<object> { new SomeClass
-                {
-                    There = 169.32m
-                }, "There", "Q2" })
+                new SomeClass { There = 169.32m }, "There", "Q2")
                 .ShouldEqual("");
         }
 
@@ -62,10 +61,7 @@ namespace Tests
         public void should_return_error_when_property_formatting_fails_and_debug_is_enabled()
         {
             NustacheHelpers.GetPropertyValue(
-                new List<object> { new SomeClass
-                {
-                    There = 169.32m
-                }, "There", "!Q2" })
+                new SomeClass { There = 169.32m }, "There", "!Q2")
                 .ShouldEqual("Format specifier was invalid.");
         }
 
@@ -79,58 +75,73 @@ namespace Tests
         public void should_get_exception_property_value()
         {
             NustacheHelpers.GetPropertyValue(
-                new List<object> { new ExceptionModel(new MyException("yada"), 0), "id" })
+                new ExceptionModel(new MyException("yada"), 0), "id", null)
                 .ShouldEqual("123456");
         }
 
         public object[][] InvalidPropertyArgs =
         {
-            new object[] { null },
-            new object[] { new List<object> { } },
-            new object[] { new List<object> { null } },
-            new object[] { new List<object> { new SomeClass() } },
-            new object[] { new List<object> { null, null} },
-            new object[] { new List<object> { new SomeClass(), "yada"} },
-            new object[] { new List<object> { new MyException("hai"), "yada"} }
+            new object[] { null, null, null },
+            new object[] { new SomeClass(), null, null },
+            new object[] { new SomeClass(), "yada", null },
+            new object[] { new MyException("hai"), "yada", null }
         };
 
         [Test]
         [TestCaseSource(nameof(InvalidPropertyArgs))]
-        public void should_return_empty_if_invalid_args(List<object> args)
+        public void should_return_empty_if_invalid_args(object source, 
+            string propertyName, string format)
         {
-            NustacheHelpers.GetPropertyValue(args).ShouldEqual("");
+            NustacheHelpers.GetPropertyValue(source, propertyName, format).ShouldEqual("");
         }
 
         [Test]
         public void should_get_formatted_value()
         {
-            NustacheHelpers.FormatValue(
-                new List<object> { new DateTime(1985, 10, 26), "yyyyMMdd" })
+            NustacheHelpers.FormatValue(new DateTime(1985, 10, 26), "yyyyMMdd")
                 .ShouldEqual("19851026");
+        }
+
+        [Test]
+        public void should_get_url_encoded_formatted_value()
+        {
+            NustacheHelpers.FormatValue(new DateTime(1985, 10, 26), "yyyy%20MM%20dd")
+                .ShouldEqual("1985 10 26");
         }
 
         [Test]
         public void should_get_formatted_value_with_curley_braces()
         {
-            NustacheHelpers.FormatValue(
-                new List<object> { new DateTime(1985, 10, 26), "}{yyyyMMdd" })
+            NustacheHelpers.FormatValue(new DateTime(1985, 10, 26), "}{yyyyMMdd")
                 .ShouldEqual("}{19851026");
         }
 
         [Test]
         public void should_return_empty_string_when_value_formatting_fails()
         {
-            NustacheHelpers.FormatValue(
-                new List<object> { 169.32m, "Q2" })
+            NustacheHelpers.FormatValue( 169.32m, "Q2")
                 .ShouldEqual("");
         }
 
         [Test]
         public void should_return_error_when_value_formatting_fails_and_debug_is_enabled()
         {
-            NustacheHelpers.FormatValue(
-                new List<object> { 169.32m, "!Q2" })
+            NustacheHelpers.FormatValue(169.32m, "!Q2")
                 .ShouldEqual("Format specifier was invalid.");
+        }
+
+        [Test]
+        public void should_replace_values()
+        {
+            NustacheHelpers.ReplaceValue("oh yo", "yo", "hai")
+                .ShouldEqual("oh hai");
+        }
+
+        [Test]
+        public void should_replace_url_encoded_value()
+        {
+            NustacheHelpers.ReplaceValue("oh yo", "%20yo", "%20hai")
+                .ShouldEqual("oh hai");
         }
     }
 }

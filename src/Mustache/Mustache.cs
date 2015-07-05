@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog.Mustache.Extensions;
 using Nustache.Core;
 
 namespace NLog.Mustache

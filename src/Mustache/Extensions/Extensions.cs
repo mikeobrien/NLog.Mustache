@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 
 namespace NLog.Mustache.Extensions
 {
@@ -27,10 +28,56 @@ namespace NLog.Mustache.Extensions
             return source == null ? default(TResult) : value(source);
         }
 
+        public static string FirstStringArg(this IList<object> args)
+        {
+            return args.GetArg(0)?.ToString();
+        }
+
+        public static string SecondStringArg(this IList<object> args)
+        {
+            return args.GetArg(1)?.ToString();
+        }
+
+        public static string ThirdStringArg(this IList<object> args)
+        {
+            return args.GetArg(2)?.ToString();
+        }
+
+        public static object FirstArg(this IList<object> args)
+        {
+            return args.GetArg(0);
+        }
+
+        public static object SecondArg(this IList<object> args)
+        {
+            return args.GetArg(1);
+        }
+
+        public static object ThirdArg(this IList<object> args)
+        {
+            return args.GetArg(2);
+        }
+
+        private static object GetArg(this IList<object> args, int index)
+        {
+            return args != null && args.Count > index ? args[index] : null;
+        }
+
+        // Total hack to work around a bug in Nustache.
+        public static string UrlDecode(this object value)
+        {
+            return (value as string).WhenNotNullOrEmpty(HttpUtility.UrlDecode);
+        }
+
         public static string StripFirst(this string value)
         {
             return value.WhenNotNull(x => string.IsNullOrEmpty(value) || 
                 x.Length == 1 ? "" : x.Substring(1));
+        }
+
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return string.IsNullOrEmpty(value);
         }
 
         public static string Format(this object value, string format)
