@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using NLog.Mustache;
 using NUnit.Framework;
@@ -134,14 +135,14 @@ namespace Tests
         [Test]
         public void should_replace_values()
         {
-            NustacheHelpers.ReplaceValue("oh yo", "yo", "hai")
-                .ShouldEqual("oh hai");
+            NustacheHelpers.ReplaceValues(new List<object> { "oh yo", "yo", "hai", "hai", "hai there" })
+                .ShouldEqual("oh hai there");
         }
 
         [Test]
         public void should_replace_url_encoded_value()
         {
-            NustacheHelpers.ReplaceValue("oh yo", "%20yo", "%20hai")
+            NustacheHelpers.ReplaceValues(new List<object> { "oh yo", "%20yo", "%20hai" })
                 .ShouldEqual("oh hai");
         }
     }

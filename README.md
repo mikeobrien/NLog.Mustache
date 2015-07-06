@@ -91,10 +91,10 @@ By default a blank string is returned if there is a formatting error. To return 
 
 ### Replacing Values
 
-Values can be replaced with the `replace` helper:
+Values can be replaced with the `replace` helper. You can specify one or multiple replacements as demonstrated below:
 
 ```handlebars
-{{replace message "search" "replacement"}}
+{{replace message "search" "replacement" "search" "replacement" ...}}
 ```
 
 *NOTE: Search and replacement strings do not support whitespace. Whitespace can be passed url encoded e.g. `%0D%0A` for new lines or `%20` for spaces.*

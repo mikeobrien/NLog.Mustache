@@ -129,5 +129,17 @@ namespace NLog.Mustache.Extensions
                 result = iterator(result);
             }
         }
+
+        public static IEnumerable<Tuple<T, T>> TakeEveryTwo<T>(this IEnumerable<T> source)
+        {
+            var done = false;
+            var first = default(T);
+            foreach (var item in source)
+            {
+                if (done) yield return new Tuple<T, T>(first, item);
+                else first = item;
+                done = !done;
+            }
+        }
     }
 }

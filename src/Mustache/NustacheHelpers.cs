@@ -88,8 +88,7 @@ namespace NLog.Mustache
         {
             try
             {
-                ctx.Write(ReplaceValue(args.FirstStringArg(), 
-                    args.SecondStringArg(), args.ThirdStringArg()));
+                ctx.Write(ReplaceValues(args));
             }
             catch (Exception exception)
             {
@@ -97,11 +96,13 @@ namespace NLog.Mustache
             }
         }
 
-        public static string ReplaceValue(string value, string find, string replace)
+        public static string ReplaceValues(IList<object> args)
         {
-            if (value.IsNullOrEmpty()) return "";
-            if (find.IsNullOrEmpty() || replace.IsNullOrEmpty()) return value;
-            return value.Replace(find.UrlDecode(), replace.UrlDecode());
+            var value = args.FirstStringArg();
+            if (value.IsNullOrEmpty() || args.Count < 3 || args.Count % 2 != 1) return "";
+            return args.Skip(1).Select(x => x.UrlDecode())
+                .TakeEveryTwo().Aggregate(value, (a, i) => 
+                    a.Replace(i.Item1, i.Item2));
         }
     }
 }
