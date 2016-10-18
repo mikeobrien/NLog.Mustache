@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
 using NLog.Mustache;
 using NUnit.Framework;
 using Should;

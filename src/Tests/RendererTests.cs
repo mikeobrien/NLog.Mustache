@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NLog;
 using NLog.Config;
-using NLog.Mustache;
 using NLog.Targets;
 using NUnit.Framework;
 using Should;

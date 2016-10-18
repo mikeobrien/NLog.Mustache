@@ -15,12 +15,16 @@ namespace NLog.Mustache
         {
             Number = number;
             _exception = exception;
-            Properties = exception?.GetType().GetProperties()
+            Properties = new List<ExceptionProperty>();
+            if (exception == null) return;
+            Properties.Add(new ExceptionProperty("Type", exception.GetType()));
+            Properties.AddRange(exception?.GetType().GetProperties()
+                .Where(x => x.Name != nameof(Exception.Data) && 
+                    x.Name != nameof(Exception.InnerException) &&
+                    x.Name != nameof(Exception.HResult))
                 .Select(x => new ExceptionProperty(x.Name, 
                     x.GetValue(exception)))
-                .Where(x => x.Name != "Data")
-                .OrderBy(x => x.Name).ToList() ?? 
-                new List<ExceptionProperty>();
+                .OrderBy(x => x.Name));
         }
 
         public int Number { get; }
@@ -31,6 +35,7 @@ namespace NLog.Mustache
         public string Message => _exception?.Message;
         public string Source => _exception?.Source;
         public string StackTrace => _exception?.StackTrace;
+        public Type Type => _exception?.GetType();
         public MethodBase TargetSite => _exception?.TargetSite;
         public List<ExceptionProperty> Properties { get; }
 

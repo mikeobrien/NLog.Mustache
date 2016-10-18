@@ -33,29 +33,27 @@ namespace Tests
             model.Source.ShouldEqual(exception.Source);
             model.StackTrace.ShouldEqual(exception.StackTrace);
             model.TargetSite.ShouldEqual(exception.TargetSite);
+            model.Type.ShouldEqual(exception.GetType());
 
-            model.Properties.Count.ShouldEqual(7);
-            model.Properties[0].Name.ShouldEqual("HelpLink");
-            model.Properties[0].Value.ShouldEqual(exception.HelpLink);
-            model.Properties[0].HasValue.ShouldBeFalse();
-            model.Properties[1].Name.ShouldEqual("HResult");
-            model.Properties[1].Value.ShouldEqual(exception.HResult);
-            model.Properties[1].HasValue.ShouldBeTrue();
-            model.Properties[2].Name.ShouldEqual("InnerException");
-            model.Properties[2].Value.ShouldEqual(exception.InnerException);
+            model.Properties.Count.ShouldEqual(6);
+            model.Properties[0].Name.ShouldEqual("Type");
+            model.Properties[0].Value.ShouldEqual(exception.GetType());
+            model.Properties[0].HasValue.ShouldBeTrue();
+            model.Properties[1].Name.ShouldEqual("HelpLink");
+            model.Properties[1].Value.ShouldEqual(exception.HelpLink);
+            model.Properties[1].HasValue.ShouldBeFalse();
+            model.Properties[2].Name.ShouldEqual("Message");
+            model.Properties[2].Value.ShouldEqual(exception.Message);
             model.Properties[2].HasValue.ShouldBeTrue();
-            model.Properties[3].Name.ShouldEqual("Message");
-            model.Properties[3].Value.ShouldEqual(exception.Message);
-            model.Properties[3].HasValue.ShouldBeTrue();
-            model.Properties[4].Name.ShouldEqual("Source");
-            model.Properties[4].Value.ShouldEqual(exception.Source);
+            model.Properties[3].Name.ShouldEqual("Source");
+            model.Properties[3].Value.ShouldEqual(exception.Source);
+            model.Properties[3].HasValue.ShouldBeFalse();
+            model.Properties[4].Name.ShouldEqual("StackTrace");
+            model.Properties[4].Value.ShouldEqual(exception.StackTrace);
             model.Properties[4].HasValue.ShouldBeFalse();
-            model.Properties[5].Name.ShouldEqual("StackTrace");
-            model.Properties[5].Value.ShouldEqual(exception.StackTrace);
+            model.Properties[5].Name.ShouldEqual("TargetSite");
+            model.Properties[5].Value.ShouldEqual(exception.TargetSite);
             model.Properties[5].HasValue.ShouldBeFalse();
-            model.Properties[6].Name.ShouldEqual("TargetSite");
-            model.Properties[6].Value.ShouldEqual(exception.TargetSite);
-            model.Properties[6].HasValue.ShouldBeFalse();
         }
 
         [Test]
